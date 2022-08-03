@@ -1,0 +1,153 @@
+{% extends "base/page.html" %}
+{% load static %}
+{% block content %}
+
+<div class="container" style='padding-top:200px'>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.css">
+  {% include "messages/message.html" %}
+  <div class="row" style="padding-bottom:50px">
+    <div class="col-md-12">
+      <h1>Dashboard</h1>
+      <hr>
+      <a href=""><button class="btn btn-primary">Map</button></a>
+      <a href=""><button class="btn btn-secondary">Browse</button></a>
+    </div>
+  </div>
+<div class="row">
+<div class="col-xl-3 col-md-6 mb-4">
+  <div class="card h-100 py-2" style="background-color:#28a745">
+    <div class="card-body">
+      <div class="row no-gutters align-items-group">
+        <div class="col mr-2"><a style="text-decoration:none" href="">
+          <div class="text-xs font-weight-bold text-primary text-uppercase mb-1" style="color:white !important">Parts</div>
+          <div class="h5 mb-0 font-weight-bold" style="color:#212529">{{ parts_count }}</div></a>
+        </div>
+        <div class="col-auto">
+          <i class="fas fa-dna fa-2x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="col-xl-3 col-md-6 mb-4">
+  <div class="card h-100 py-2" style="background-color:#28a745">
+    <div class="card-body">
+      <div class="row no-gutters align-items-group">
+        <div class="col mr-2"><a style="text-decoration:none" href="">
+          <div class="text-xs font-weight-bold text-success text-uppercase mb-1" style="color:white !important">Samples</div>
+          <div class="h5 mb-0 font-weight-bold" style="color:#212529">{{ samples_count }}</div></a>
+        </div>
+        <div class="col-auto">
+          <i class="fas fa-vial fa-2x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="col-xl-3 col-md-6 mb-4">
+  <div class="card h-100 py-2" style="background-color:#28a745">
+    <div class="card-body">
+      <div class="row no-gutters align-items-group">
+        <div class="col mr-2"><a style="text-decoration:none" href="">
+          <div class="text-xs font-weight-bold text-info text-uppercase mb-1" style="color:white !important">Plates</div>
+          <div class="row no-gutters align-items-group"></a>
+            <div class="col-auto">
+              <div class="h5 mb-0 mr-3 font-weight-bold">{{ plates_count }}</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-auto">
+          <i class="fas fa-circle fa-2x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="col-xl-3 col-md-6 mb-4">
+  <div class="card h-100 py-2" style="background-color:#28a745">
+    <div class="card-body">
+      <div class="row no-gutters align-items-group">
+        <div class="col mr-2"><a style="text-decoration:none" href="">
+          <div class="text-xs font-weight-bold text-warning text-uppercase mb-1" style="color:white !important">Tags</div>
+          <div class="h5 mb-0 font-weight-bold" style="color:#212529">{{ tags_count }}</div>
+        </div></a>
+        <div class="col-auto">
+          <i class="fas fa-tags fa-2x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+    <div class="row card" style="padding:30px; margin:0px">
+      <div class="col-md-12">
+         <div>
+           <canvas id="dashboard-counts"></canvas>
+         </div>
+      </div>
+    </div>
+  {% if request.user.is_authenticated %}
+  <div class="row" style="margin-top:100px">
+    <div class="col-md-12">
+      <h1 style="padding-bottom:20px; float:right">{% if request.user.is_superuser or request.user.is_staff %}Shipments{% else %}Your Orders{% endif %}</h1>
+    </div>
+  </div>{% if request.user.is_superuser or request.user.is_staff %}
+  <div class="row">
+    <div class="col-md-12">
+      <a href=""><button class="btn btn-primary">Update Tracking</button></a>
+    </div>
+  </div>
+{% endif %}
+  <div class="row">
+    <div class="col-md-12">{% if orders.count > 0 %}
+      <hr>
+      {% include "tables/order_table.html" with table_id="order-table" hide_checkout="true" %}{% endif %}
+    </div>
+  </div>
+</div>
+{% endif %}
+{% endblock %}
+{% block pagescripts %}
+<link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
+<script>
+$(document).ready(function() {
+  $('#order-table').DataTable();
+
+var ctx = document.getElementById("dashboard-counts").getContext('2d');
+ctx.height = 200;
+var myChart = new Chart(ctx, {
+  type: 'bar',
+  data: {
+    labels: [{% for name, count in counts.items %}"{{ name }}"{% if forloop.last %}{% else %},{% endif %}{% endfor %}],
+    datasets: [{
+      label: "FreeGene Counts",
+      data: [{% for name, count in counts.items %}{{ count }}{% if forloop.last %}{% else %},{% endif %}{% endfor %}],
+      backgroundColor: [{% for name, count in counts.items %}"#fdda51"{% if forloop.last %}{% else %},{% endif %}{% endfor %}],
+    }]
+  },
+  options: {
+    maintainAspectRatio: false,
+    legend: {
+      display: false
+    },
+    scales: {
+      yAxes: [{
+        ticks: {
+          beginAtZero: true
+        }
+      }]
+    }
+  }
+});
+
+
+});
+</script>
+{% endblock %}

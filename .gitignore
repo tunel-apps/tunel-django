@@ -1,0 +1,8 @@
+app.yaml
+.env
+db.sqlite3
+env
+static
+migrations
+__pycache__
+tuneldjango/secret_key.py

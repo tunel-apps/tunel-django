@@ -1,0 +1,22 @@
+{% load static %}
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700">
+<link rel="stylesheet" href="{% static 'css/nucleo.css' %}" type="text/css">
+<link rel="stylesheet" href="{% static 'css/all.min.css' %}" type="text/css">
+<link rel="stylesheet" href="{% static 'css/argon.min.css' %}" type="text/css">
+<style>
+body {
+    background-color: white;
+    padding-top: 20px;
+}
+.form-control:disabled, .form-control[readonly] {
+    opacity: 1;
+    background-color: white !important;
+}
+</style>
+{{ form.media }}
+<div id="project-export" class="container">
+    <h1>{{ project.name }}</h1>
+    <hr>
+    {% include "projects/form.html" %}
+</div>

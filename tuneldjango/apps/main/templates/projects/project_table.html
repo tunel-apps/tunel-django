@@ -1,0 +1,17 @@
+<table class="table table-bordered" id="projects_table" width="100%" cellspacing="0">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>{% if request.user.group == project.group %}
+            <th>Actions</th>{% endif %}
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><a href="{% url 'view_project_form' project.uuid %}">{{ project.name }}</a></td>
+            <td>{{ project.description | truncatechars:100 }}</td>{% if request.user.group == project.group %}
+            <td><a href="{% url 'edit_form_template' project.uuid %}"><button type="button" class="btn btn-warning">Edit Form</button></a></td>{% endif %}
+        </tr>
+    </tbody>
+</table>
+

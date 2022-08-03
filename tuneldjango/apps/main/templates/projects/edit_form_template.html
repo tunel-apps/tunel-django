@@ -1,0 +1,74 @@
+{% extends "base/page.html" %}
+{% load static %}
+{% block css %}
+<style>
+.hide {
+  display: none
+}
+</style>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js" crossorigin="anonymous" integrity="sha384-xBuQ/xzmlsLoJpyjoggmTEz8OWUFM0/RC5BsqQBDX2v5cMvDHcMakNTNrHIW2I5f"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" crossorigin="anonymous" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" crossorigin="anonymous" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"></script>
+{% endblock %}
+{% block content %}
+    <h1>Form Template for {{ project.name }}</h1>
+    <hr>
+    <p style="max-width:100%" class="alert alert-info">The purpose of this template is to track the progress of your project during as you create it.</p>
+    {% if form.errors %}{% for field, error in form.errors.items %}<p class="alert alert-warning alert-dissmissable">{{ field }}: {{ error }}</p>{% endfor %}{% endif %}
+    {{ form.media }}
+    <form id="templateform" method="POST" class="post-form">{% csrf_token %}    
+     {% include "projects/form.html" %}
+    <button type="submit" class="save btn btn-default">Save</button>
+    </form>
+{% endblock %}
+{% block scripts %}
+<script>
+var $TABLE = $('#table');
+
+$("#templateform").submit(function(event){
+    event.preventDefault()
+    var form = $(this).closest('form');
+    form = form.serializeArray();
+
+     var $rows = $TABLE.find('tr:not(:hidden)');
+     var data = [];
+
+     // Turn all existing rows into a loopable array
+     count = 0
+     $rows.each(function () {
+        var $td = $(this).find('td');
+        console.log($td)
+
+        // Use the headers from earlier to name our hash keys
+        $td.each(function (i, col) {
+            var classname = $(col).attr("class")
+            if ((classname != "") && (classname != undefined)) {
+                data.push({name: "strategy_" + classname + "_" + count, value: $(col).text()})
+            }
+        });
+        count+=1
+     });
+
+    form = form.concat(data)
+    $.post('', form, function(d) {
+        if (d.error) {
+           alert("There was a problem updating your user details")
+        } 
+        console.log(d);
+    });
+
+    // Output the result
+    console.log(JSON.stringify(data));
+
+})
+
+$('.table-add').click(function () {
+  var $clone = $TABLE.find('tr.hide').clone(true).removeClass('hide');
+  $TABLE.find('table').append($clone);
+});
+
+$('.table-remove').click(function () {
+  $(this).parents('tr').detach();
+});
+</script>
+{% endblock %}

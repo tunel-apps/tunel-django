@@ -1,0 +1,8 @@
+{% extends "base/page.html" %}
+{% load static %}
+{% block content %}
+<h1>Projects owned by {{ request.user.group.name }}</h1>
+<hr>
+{% if projects.count > 0 %}{% include "projects/projects_table.html" %}{% else %}
+<p class="alert alert-primary">The {{ request.user.group.name }} does not have any shared projects! <a style="float:right" href="{% url 'new_project' %}"><button class="btn btn-primary btn-sm" type="button">make a new project</button></a>.</p>{% endif %}
+{% endblock %}

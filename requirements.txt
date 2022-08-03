@@ -1,0 +1,10 @@
+Django
+PyMySQL
+django-extensions
+django-ratelimit
+django-gravatar2
+reportlab
+sendgrid
+tzdata
+pyaml
+uwsgi
