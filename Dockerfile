@@ -28,8 +28,11 @@ RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 WORKDIR /code
 COPY . /code/
-COPY ./nginx/nginx.conf /etc/nginx/conf.d/default.conf
-COPY ./nginx/uwsgi_params.par /etc/nginx/uwsgi_params.par
-CMD /code/nginx/run_uwsgi.sh
+
+# For filebrowsing - can be bound from container
+RUN mkdir -p /var/www/data
+COPY ./scripts/nginx/nginx.conf /etc/nginx/conf.d/default.conf
+COPY ./scripts/nginx/uwsgi_params.par /etc/nginx/uwsgi_params.par
+CMD /code/scripts/run_uwsgi.sh
 
 EXPOSE 8000

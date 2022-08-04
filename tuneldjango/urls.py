@@ -3,6 +3,7 @@ from django.urls import include, path
 from tuneldjango.apps.main import urls as main_urls
 from tuneldjango.apps.base import urls as base_urls
 from tuneldjango.apps.users import urls as user_urls
+from tuneldjango.apps.files import urls as browser_urls
 
 # Customize admin title, headers
 admin.site.site_header = "tunel-django Administration"
@@ -17,5 +18,7 @@ urlpatterns = [
     path("", include(base_urls)),
     path("", include(main_urls)),
     path("", include(user_urls)),
+    # This is for the file browser
+    path("files/", include(browser_urls)),
     path("admin/", admin.site.urls),
 ]

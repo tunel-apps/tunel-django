@@ -20,13 +20,13 @@
 
         <!-- Facebook and Twitter integration -->
         <meta property="og:title" content="{{ TITLE }}"/>
-        <meta property="og:image" content="{% static 'img/logo/logo.png' %}"/>
+        <meta property="og:image" content="{% static 'img/logo.png' %}"/>
         <meta property="og:url" content="{{ domain }}"/>
         <meta property="og:site_name" content="{{ TITLE }}"/>
 
         <meta property="og:description" content="{{ TITLE }}"/>
         <meta name="twitter:title" content="{{ TITLE }}" />
-        <meta name="twitter:image" content="{% static 'img/logo/logo.png' %}" />
+        <meta name="twitter:image" content="{% static 'img/logo.png' %}" />
         {% if TWITTER_USERNAME %}<meta name="twitter:url" content="https://www.twitter.com/{{ TWITTER_USERNAME }}" />{% endif %}
         <meta name="twitter:card" content="summary" />
 

@@ -8,26 +8,29 @@ logger = logging.getLogger(__name__)
 
 
 class Command(BaseCommand):
-    """add a superuser"""
+    """
+    add a superuser
+    """
 
     def add_arguments(self, parser):
-        parser.add_argument(dest="username", nargs=1, type=str)
+        parser.add_argument(dest="username", nargs="*")
 
     help = "Generates a superuser"
 
     def handle(self, *args, **options):
-        if options["username"] is None:
-            raise CommandError("Please provide a username.")
+        # TODO can add their email here for notifications, also as tunel arg
+        if not options["username"] or len(options["username"]) != 2:
+            raise CommandError("Please provide a username and password")
 
         logger.debug("Username: %s" % options["username"][0])
 
         try:
-            user = User.objects.get(username=options["username"][0])
-        except User.DoesNotExist:
-            raise CommandError("This username does not exist.")
-
-        if user.is_superuser is True:
-            raise CommandError("This user is already a superuser.")
-        else:
-            user = User.objects.add_superuser(user)
-            print("%s is now a superuser." % user.username)
+            user = User.objects.create_superuser(
+                options["username"][0],
+                "user@noreply.tunel-app.com",
+                options["username"][1],
+            )
+            user.is_staff = True
+            user.save()
+        except Exception as e:
+            print("cannot create superuser: %s" % e)

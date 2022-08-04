@@ -44,3 +44,9 @@ API_TOKEN_EXPIRES_SECONDS: 6000
 
 # If you change the authentication server, set to non null
 AUTH_SERVER: null
+
+# Social media networks
+TWITTER_USERNAME": null
+FACEBOOK_USERNAME": null
+INSTAGRAM_USERNAME": null
+GITHUB_REPOSITORY": null

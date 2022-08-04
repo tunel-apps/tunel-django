@@ -41,6 +41,7 @@ def send_email(
     attachment: the attachment file on the server
     """
     from tuneldjango.settings import SENDGRID_API_KEY, SENDGRID_SENDER_EMAIL
+
     if not SENDGRID_API_KEY or not SENDGRID_SENDER_EMAIL:
         if request is not None:
             messages.warning(

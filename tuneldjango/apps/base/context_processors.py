@@ -9,3 +9,12 @@ def domain_processor(request):
         "KEYWORDS": settings.KEYWORDS,
     }
 
+
+def social_processor(request):
+    return {
+        "TWITTER_USERNAME": settings.TWITTER_USERNAME,
+        "FACEBOOK_USERNAME": settings.FACEBOOK_USERNAME,
+        "INSTAGRAM_USERNAME": settings.INSTAGRAM_USERNAME,
+        "GOOGLE_ANALYTICS_ID": settings.GOOGLE_ANALYTICS_ID,
+        "GITHUB_REPOSITORY": settings.GITHUB_REPOSITORY,
+    }

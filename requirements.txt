@@ -3,6 +3,7 @@ PyMySQL
 django-extensions
 django-ratelimit
 django-gravatar2
+django-filebrowser
 reportlab
 sendgrid
 tzdata

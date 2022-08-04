@@ -12,7 +12,9 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 ROOT_DIR = os.path.dirname(BASE_DIR)
 
 # The spackmon global conflict contains all settings.
-SETTINGS_FILE = os.environ.get('TUNELDJANGO_SETTINGS_FILE') or os.path.join(ROOT_DIR, "settings.yaml")
+SETTINGS_FILE = os.environ.get("TUNELDJANGO_SETTINGS_FILE") or os.path.join(
+    ROOT_DIR, "settings.yaml"
+)
 if not os.path.exists(SETTINGS_FILE):
     sys.exit("Global settings file settings.yaml is missing in the install directory.")
 
@@ -61,6 +63,7 @@ def generate_secret_keys(filename):
             key = get_random_secret_key()
             fd.writelines("%s = '%s'\n" % (keyname, key))
 
+
 # Generate secret keys if do not exist, and not defined in environment
 SECRET_KEY = os.environ.get("SECRET_KEY")
 JWT_SERVER_SECRET = os.environ.get("JWT_SERVER_SECRET")
@@ -83,7 +86,7 @@ SOCIAL_AUTH_LOGIN_REDIRECT_URL = cfg.DOMAIN_NAME
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True if os.getenv("DEBUG") == "true" else False
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Title for the website
 TITLE = os.environ.get("TUNELDJANGO_TITLE", "tunel-django")
@@ -108,39 +111,43 @@ INSTALLED_APPS = [
     "tuneldjango.apps.base",
     "tuneldjango.apps.main",
     "tuneldjango.apps.users",
+    # File browsing
+    "grappelli",
+    "filebrowser",
+    "tuneldjango.apps.files",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
-    'django.contrib.staticfiles',
+    "django.contrib.staticfiles",
     "django.contrib.messages",
     "django_extensions",
     "django_gravatar",
 ]
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "django.middleware.security.SecurityMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
 ROOT_URLCONF = "tuneldjango.urls"
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
             ],
         },
     },
@@ -175,13 +182,15 @@ if os.getenv("MYSQL_HOST") is not None:
         }
     }
 else:
-    # Use sqlite when testing locally
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
-            "NAME": os.path.join(ROOT_DIR, "db.sqlite3"),
+            "NAME": os.path.join(ROOT_DIR, "db", "tunel-django.db"),
         }
     }
+
+# Filebrowser settings
+GRAPPELLI_ADMIN_TITLE = "Tunel Django"
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
@@ -211,10 +220,16 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
-STATIC_URL = 'static/'
-STATIC_ROOT = os.path.join(ROOT_DIR, '/var/www/static/')
-MEDIA_URL = 'data/'
-MEDIA_ROOT = os.path.join(ROOT_DIR, '/var/www/data/')
+STATIC_URL = "static/"
+MEDIA_URL = "data/"
+
+USE_NGINX = os.environ.get("TUNELDJANGO_NGINX")
+if USE_NGINX:
+    STATIC_ROOT = "/var/www/static"
+    MEDIA_ROOT = "/var/www/data"
+else:
+    STATIC_ROOT = os.path.join(ROOT_DIR, "static/")
+    MEDIA_ROOT = os.path.join(ROOT_DIR, "data/")
 
 # Caches
 

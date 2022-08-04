@@ -29,17 +29,19 @@ the container (in the same spot) at runtime.
 
 #### Authentication 
 
-The interface currently assumes that the "backend" (ability to log in) is done via
-invite only, and so the typical registration form is not provided. If you would like help
-to add a standard registration form or other forms of authentication (social auth, SAML, etc.)
-please [ask for this feature]({{ site.repo }}/issues).
-This means that an administrator is responsible for adding new users. 
+We currently have basic user/password authentication, and you can specify a username and 
+password when you deploy the Tunel app. It should NOT be the same as your cluster information.
+Note that since this is only deployed to you via a socket, it's not really adding hardened security,
+but is an extra layer for the file browser, etc (akin to a Jupyter notebook token). Note
+that if you don't provide anything to the app (such as during development) you can use:
 
+ - **user**: tunel-user
+ - **password**: tunel-password
+ 
+ 
 ### SendGrid
 
-We use SendGrid to invite users to the site. Note that the emails can sometimes
-end up in spam, so you should be prepared to notify invitees of this.
-
+We use SendGrid for an example of sending an alert when a task finishes. **TODO**
 #### SendGrid Sender Email
 
 You'll need a `SENDGRID_SENDER_EMAIL` exported in your .env file in order to use
@@ -97,21 +99,38 @@ $ docker build -t tunel-django .
 ```
 
 And then run the container, binding the $PWD to `/code` if you want to develop.
-And note that since we are using Docker, will will also be binding the socket to
-our local machine:
+Note that for local development we use a traditional web server (e.g., nginx) to serve the 
+application, and for cluster deployment we use uwsgi (with [static files](https://uwsgi-docs.readthedocs.io/en/latest/StaticFiles.html)!) and sockets.
 
 ```bash
-$ mkdir ./tmp
-$ docker run --rm -it -v $PWD:/code -v $PWD/static:/var/www/static -p 8000:8000 --name tunel tunel-django
+$ docker run --rm -it -v $PWD:/code -p 8000:8000 --name tunel tunel-django
 ```
 
-We have to bind the PWD static to where nginx can generally see them.
-Open your browser to [http://localhost:8000](http://localhost:8000)
-To execute a command to the container (in another terminal):
+Open your browser to [http://localhost:8000](http://localhost:8000).
+Note that changes to your code will update automatically, however if you
+add new static files you'll need to do Django's collect static.
+To do this (or more generally execute a command to the container, in another terminal):
 
 ```bash
 $ docker exec -it tunel python3 /code/manage.py collectstatic --noinput
 25 static files copied to '/var/www/static', 156 unmodified.
+```
+
+### Useful Commands
+
+```bash
+# Re-collect static files
+$ docker exec -it tunel python3 /code/manage.py collectstatic --noinput
+
+# Make migrations
+$ docker exec -it tunel python3 /code/manage.py makemigrations
+$ docker exec -it tunel python3 /code/manage.py migrate
+
+# Show URLs you have
+$ docker exec -it tunel python3 /code/manage.py show_urls
+
+# Add a super user
+$ docker exec -it tunel python3 /code/manage.py add_superuser <name> <pass>
 ```
 
 ### Database
@@ -129,11 +148,8 @@ Migrations are performed at app start.
 
 ### Models
 
-The core of any Django application is the definition of [models](https://docs.djangoproject.com/en/3.0/topics/db/models/).
-A model maps directly to a database table, so when you originally design your application, you will
-want to spend some time on this design. The current application creates dummy models for users, an organization,
-and then associated projects. You can also imagine having models for a biological entity, or some kind
-of machine learning model.  Please reach out to [@vsoch]({{ site.repo }}/issues) if you want any help
+The core of any Django application is the definition of [models](https://docs.djangoproject.com/en/3.0/topics/db/models/). A model maps directly to a database table, so when you originally design your application, you will
+want to spend some time on this design. The current application creates dummy models for users (users), an organization, and then associated projects (main). You can also imagine having models for a biological entity, or some kindof machine learning model.  Please reach out to [@vsoch]({{ site.repo }}/issues) if you want any help
 designing your models.
 
 
@@ -151,8 +167,6 @@ export SENTRY_ID=https://xxxxxxxxxxxxxxxxxxxxxxxxxxx.ingest.sentry.io/111111
 Don't add this until you are ready to start getting error reports (e.g., when testing locally
 and Debug modeis true you don't need it).
 
-
-
 ### Testing
 
 You can write tests for your models, and an example is provided in the repository "tests" folder.
@@ -168,3 +182,7 @@ You can see the [Django docs for testing](https://docs.djangoproject.com/en/3.0/
 ### Deployment
 
 **coming soon**
+
+
+At this point, you can check out the [apps]({{ site.baseurl }}/docs/usage/apps/) that come with the template that you can use, extend, or modify. We aim to provide a standard set of common use cases that you 
+might encounter.

@@ -12,7 +12,8 @@ urlpatterns = [
     path("search/", views.search_view, name="search"),
     path("searching/", views.run_search, name="running_search"),
     path("search/<str:query>/", views.search_view, name="search_query"),
-    path("robots.txt",
+    path(
+        "robots.txt",
         TemplateView.as_view(
             template_name="base/robots.txt", content_type="text/plain"
         ),
