@@ -49,5 +49,5 @@ if [[ "${use_nginx}" == "true" ]]; then
     uwsgi --socket=${socket} /code/scripts/uwsgi.ini
 else
     printf "uwsgi --socket=${socket} --static-map /static=/code/static /code/scripts/uwsgi.ini\n"
-    uwsgi --socket=${socket} --static-map /static=/code/static /data=/code/data /code/scripts/uwsgi-standalone.ini
+    uwsgi --socket=${socket} --static-map /static=/code/static --static-map /data=/code/data /code/scripts/uwsgi-standalone.ini
 fi

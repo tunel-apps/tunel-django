@@ -30,7 +30,7 @@ WORKDIR /code
 COPY . /code/
 
 # For filebrowsing - can be bound from container
-RUN mkdir -p /var/www/data
+RUN mkdir -p /var/www/data /code/data
 COPY ./scripts/nginx/nginx.conf /etc/nginx/conf.d/default.conf
 COPY ./scripts/nginx/uwsgi_params.par /etc/nginx/uwsgi_params.par
 CMD /code/scripts/run_uwsgi.sh
