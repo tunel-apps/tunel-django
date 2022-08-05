@@ -238,7 +238,9 @@ DATA_UPLOAD_MAX_MEMORY_SIZE = None
 
 # Disable check for max memory size of data
 DATA_UPLOAD_MAX_MEMORY_SIZE = None
-FILE_UPLOAD_MAX_MEMORY_SIZE = None
+
+# Must be set for upload comparison
+FILE_UPLOAD_MAX_MEMORY_SIZE = 999999999999999
 
 # Logging
 
