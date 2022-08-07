@@ -24,11 +24,11 @@ description: > # this means to ignore newlines until "baseurl:"
 baseurl: "/tunel-django" # the subpath of your site, e.g. /blog
 
 # This is mostly for testing
-url: "https://vsoch.github.io" # the base hostname & protocol for your site
+url: "https://tunel-apps.github.io" # the base hostname & protocol for your site
 
 # Social (First three Required)
-repo: "https://github.com/vsoch/tunel-django"
-github_user: "vsoch"
+repo: "https://github.com/tunel-apps/tunel-django"
+github_user: "tunel-apps"
 github_repo: "tunel-django"
 
 # Optional

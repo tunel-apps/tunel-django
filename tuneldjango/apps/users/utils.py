@@ -46,7 +46,7 @@ def send_email(
         if request is not None:
             messages.warning(
                 request,
-                "SendGrid secrets were not found in the environment. Please see https://vsoch.github.io/tuneldjango/docs/getting-started/#sendgrid-secrets",
+                "SendGrid secrets were not found in the environment. Please see https://tunel-apps.github.io/tuneldjango/docs/getting-started/#sendgrid-secrets",
             )
         return False
 

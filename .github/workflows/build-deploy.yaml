@@ -19,9 +19,9 @@ jobs:
 
       - name: Build Container
         run: |
-            docker build -t ghcr.io/vsoch/tunel-django .
+            docker build -t ghcr.io/tunel-apps/tunel-django .
             version=$(cat VERSION)
-            docker tag ghcr.io/vsoch/tunel-django:latest ghcr.io/vsoch/tunel-django:${version}
+            docker tag ghcr.io/tunel-apps/tunel-django:latest ghcr.io/tunel-apps/tunel-django:${version}
 
       - name: Login and Deploy Test Container
         if: (github.event_name != 'pull_request')
@@ -29,5 +29,5 @@ jobs:
             docker images
             echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ secrets.GHCR_USERNAME }} --password-stdin
             version=$(cat VERSION)
-            docker push ghcr.io/vsoch/tunel-django:latest
-            docker push ghcr.io/vsoch/tunel-django:${version}
+            docker push ghcr.io/tunel-apps/tunel-django:latest
+            docker push ghcr.io/tunel-apps/tunel-django:${version}

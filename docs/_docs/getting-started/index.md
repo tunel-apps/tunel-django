@@ -17,7 +17,7 @@ the user documentation, see [the user guide]({{ site.baseurl }}/user-guide/).
 To locally (if you are developing) you'll want to clone the project:
 
 ```bash
-$ git clone https://github.com/vsoch/tunel-django
+$ git clone https://github.com/tunel-apps/tunel-django
 $ cd tunel-django
 ```
 
@@ -181,7 +181,13 @@ You can see the [Django docs for testing](https://docs.djangoproject.com/en/3.0/
 
 ### Deployment
 
-**coming soon**
+We recommend you deploy onto your HPC using tunel:
+
+```bash
+$ tunel run-app <server> singularity/socket/tunel-django
+```
+
+Full documentation can be found [here](https://tunel-apps.github.io/tunel/_static/apps/r/singularity-socket-tunel-django/).
 
 
 At this point, you can check out the [apps]({{ site.baseurl }}/docs/usage/apps/) that come with the template that you can use, extend, or modify. We aim to provide a standard set of common use cases that you 
