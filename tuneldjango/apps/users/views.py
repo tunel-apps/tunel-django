@@ -2,8 +2,6 @@ from tuneldjango.apps.users.models import Group, User
 from tuneldjango.apps.users.decorators import user_agree_terms
 from tuneldjango.apps.users.utils import generate_random_password, send_email
 from tuneldjango.settings import (
-    VIEW_RATE_LIMIT as rl_rate,
-    VIEW_RATE_LIMIT_BLOCK as rl_block,
     TITLE,
     DOMAIN_NAME,
 )
@@ -22,14 +20,12 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
 from django.shortcuts import get_object_or_404, render, redirect
-from ratelimit.decorators import ratelimit
 from django.utils import timezone
 from uuid import uuid4
 
 ## Groups
 
 
-@ratelimit(key="ip", rate=rl_rate, block=rl_block)
 @user_agree_terms
 def group_details(request, uuid):
     """Return a project, or 404."""
@@ -40,7 +36,6 @@ def group_details(request, uuid):
         raise Http404
 
 
-@ratelimit(key="ip", rate=rl_rate, block=rl_block)
 @login_required
 @user_agree_terms
 def user_group(request):
@@ -51,7 +46,6 @@ def user_group(request):
     return redirect("index")
 
 
-@ratelimit(key="ip", rate=rl_rate, block=rl_block)
 @login_required
 @user_agree_terms
 def all_groups(request, groups=None):
@@ -63,7 +57,6 @@ def all_groups(request, groups=None):
 ## Users
 
 
-@ratelimit(key="ip", rate=rl_rate, block=rl_block)
 def invited_user(request, uuid):
     """The view for an invited user to set their password and enable account."""
     if request.method == "POST":
@@ -114,7 +107,6 @@ def invited_user(request, uuid):
     return render(request, "users/invited_user.html", {"groups": Group.objects.all()})
 
 
-@ratelimit(key="ip", rate=rl_rate, block=rl_block)
 @login_required
 @user_agree_terms
 def invite_users(request):
@@ -176,7 +168,6 @@ def invite_users(request):
 ## Account Creation and Manamgent
 
 
-@ratelimit(key="ip", rate=rl_rate, block=rl_block)
 @login_required
 @user_agree_terms
 def view_profile(request, username=None, form=None):
@@ -196,7 +187,6 @@ def view_profile(request, username=None, form=None):
     return render(request, "users/profile.html", context)
 
 
-@ratelimit(key="ip", rate=rl_rate, block=rl_block)
 @login_required
 def delete_account(request):
     """delete a user's account"""
@@ -224,7 +214,6 @@ def change_password(request):
     return redirect("index")
 
 
-@ratelimit(key="ip", rate=rl_rate, block=rl_block)
 def agree_terms(request):
     """ajax view for the user to agree"""
     if request.method == "POST":
@@ -239,7 +228,6 @@ def agree_terms(request):
     )
 
 
-@ratelimit(key="ip", rate=rl_rate, block=rl_block)
 def login(request):
     """login is bootstrapped here to show the user a usage agreement first, in the
     case that he or she has not agreed to the terms.

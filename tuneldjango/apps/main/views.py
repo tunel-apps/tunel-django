@@ -1,6 +1,5 @@
 from django.shortcuts import render, redirect
 from django.http import Http404
-from ratelimit.decorators import ratelimit
 
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -8,10 +7,6 @@ from django.forms.models import model_to_dict
 from tuneldjango.apps.users.decorators import user_agree_terms
 
 from tuneldjango.apps.main.models import Project
-from tuneldjango.settings import (
-    VIEW_RATE_LIMIT as rl_rate,
-    VIEW_RATE_LIMIT_BLOCK as rl_block,
-)
 from tuneldjango.apps.main.forms import (
     ProjectForm,
     FormTemplateForm,
@@ -20,7 +15,6 @@ from tuneldjango.apps.main.forms import (
 ## Projects
 
 
-@ratelimit(key="ip", rate=rl_rate, block=rl_block)
 @login_required
 @user_agree_terms
 def project_details(request, uuid):
@@ -34,7 +28,6 @@ def project_details(request, uuid):
         raise Http404
 
 
-@ratelimit(key="ip", rate=rl_rate, block=rl_block)
 @login_required
 @user_agree_terms
 def user_projects(request):
@@ -45,7 +38,6 @@ def user_projects(request):
     return all_projects(request, projects)
 
 
-@ratelimit(key="ip", rate=rl_rate, block=rl_block)
 @login_required
 @user_agree_terms
 def all_projects(request, projects=None):
@@ -55,7 +47,6 @@ def all_projects(request, projects=None):
     return render(request, "projects/all_projects.html", context={"projects": projects})
 
 
-@ratelimit(key="ip", rate=rl_rate, block=rl_block)
 @login_required
 @user_agree_terms
 def new_project(request):
@@ -74,7 +65,6 @@ def new_project(request):
 ## Form Templates
 
 
-@ratelimit(key="ip", rate=rl_rate, block=rl_block)
 @login_required
 @user_agree_terms
 def edit_form_template(request, uuid):
@@ -123,7 +113,6 @@ def edit_form_template(request, uuid):
     )
 
 
-@ratelimit(key="ip", rate=rl_rate, block=rl_block)
 @login_required
 @user_agree_terms
 def view_project_form(request, uuid):

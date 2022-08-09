@@ -1,14 +1,8 @@
 from django.db.models import Q
 from django.shortcuts import render
 
-from ratelimit.decorators import ratelimit
 from tuneldjango.apps.main.models import Project
 from itertools import chain
-
-from tuneldjango.settings import (
-    VIEW_RATE_LIMIT as rl_rate,
-    VIEW_RATE_LIMIT_BLOCK as rl_block,
-)
 
 
 # Custom 404/500 views
@@ -26,22 +20,18 @@ def handler500(request):
     return response
 
 
-@ratelimit(key="ip", rate=rl_rate, block=rl_block)
 def index_view(request):
     return render(request, "main/index.html")
 
 
-@ratelimit(key="ip", rate=rl_rate, block=rl_block)
 def about_view(request):
     return render(request, "main/about.html")
 
 
-@ratelimit(key="ip", rate=rl_rate, block=rl_block)
 def terms_view(request):
     return render(request, "terms/usage_agreement_fullwidth.html")
 
 
-@ratelimit(key="ip", rate=rl_rate, block=rl_block)
 def contact_view(request):
     return render(request, "main/contact.html")
 
@@ -49,7 +39,6 @@ def contact_view(request):
 # Search
 
 
-@ratelimit(key="ip", rate=rl_rate, block=rl_block)
 def search_view(request, query=None):
     """search projects. This is available to anyone with a login"""
     context = {"submit_result": "anything"}
@@ -66,7 +55,6 @@ def search_view(request, query=None):
     return render(request, "search/search.html", context)
 
 
-@ratelimit(key="ip", rate=rl_rate, block=rl_block)
 def run_search(request):
     """The driver to show results for a parts search."""
     if request.method == "POST":

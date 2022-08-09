@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.urls import include, path
+from tuneldjango.apps.api import urls as api_urls
 from tuneldjango.apps.main import urls as main_urls
 from tuneldjango.apps.base import urls as base_urls
 from tuneldjango.apps.users import urls as user_urls
@@ -18,6 +19,7 @@ urlpatterns = [
     path("", include(base_urls)),
     path("", include(main_urls)),
     path("", include(user_urls)),
+    path("api/", include(api_urls)),
     # This is for the file browser
     path("files/", include(browser_urls)),
     path("admin/", admin.site.urls),
