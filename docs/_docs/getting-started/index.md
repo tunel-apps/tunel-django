@@ -76,20 +76,6 @@ Then to create your key:
 If the value is found to be None, emails will not be sent.
 
 
-### Rate Limits
-
-It's hard to believe that anyone would want to maliciously issue requests to your server,
-but it's unfortunately a way of life. For this reason, all views have a rate limit, along
-with blocking ip addresses that exceed it (for the duration of the limit, one day). You
-can customize this:
-
-```python
-VIEW_RATE_LIMIT="50/1d"  # The rate limit for each view, django-ratelimit, "50 per day per ipaddress)
-VIEW_RATE_LIMIT_BLOCK=True # Given that someone goes over, are they blocked for the period?
-```
-And see the [django-ratelimit](https://django-ratelimit.readthedocs.io/en/v1.0.0/usage.html) documentation
-for other options. 
-
 ## Development
 
 To develop locally, you'll want to build the containr:

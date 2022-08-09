@@ -3,7 +3,7 @@
 {% block content %}
         <div class="ct-page-title">
           <h1 class="ct-title" id="content">
-            Welcome to {{ TITLE }}!
+            Welcome to {% if TITLE %}{{ TITLE }}{% else %}Tunel Django!{% endif %}!
           </h1>
           <div class="avatar-group mt-3">
           </div>

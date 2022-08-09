@@ -19,6 +19,10 @@ The template includes:
  - several database options supported by Django (sqlite, postgres and mysql)
  - examples of testing for your code
 
+## TODO
+
+ - Add structured API
+
 ## Getting Started
 
 You can jump in to the [documentation](https://tunel-apps.github.io/tunel-django) to

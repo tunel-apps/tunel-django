@@ -1,7 +1,6 @@
 Django
 PyMySQL
 django-extensions
-django-ratelimit
 django-gravatar2
 django-filebrowser
 reportlab
@@ -9,3 +8,6 @@ sendgrid
 tzdata
 pyaml
 uwsgi
+
+# only useful for development
+IPython

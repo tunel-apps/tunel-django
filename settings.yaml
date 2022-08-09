@@ -13,6 +13,7 @@
 
 # Force use of sqlite (set to none null)
 USE_SQLITE: null
+SITE_TITLE: Tunel Django
 
 # Global server settings
 ENVIRONMENT: test

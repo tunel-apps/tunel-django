@@ -89,7 +89,7 @@ DEBUG = True if os.getenv("DEBUG") == "true" else False
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Title for the website
-TITLE = os.environ.get("TUNELDJANGO_TITLE", "tunel-django")
+TITLE = os.environ.get("TUNELDJANGO_TITLE", cfg.SITE_TITLE) or "Tunel Django"
 AUTHOR = os.environ.get("AUTHOR", "vsoch")
 KEYWORDS = os.environ.get("KEYWORDS", "django,template")
 
@@ -269,14 +269,6 @@ if cfg.ENABLE_SENTRY:
     from sentry_sdk.integrations.django import DjangoIntegration
 
     sentry_sdk.init(dsn=cfg.SENTRY_DSN, integrations=[DjangoIntegration()])
-
-# Rate Limiting
-
-# Set to very high values to allow for development, etc.
-VIEW_RATE_LIMIT = "1000/1d"  # The rate limit for each view, django-ratelimit, "50 per day per ipaddress)
-VIEW_RATE_LIMIT_BLOCK = (
-    True  # Given that someone goes over, are they blocked for the period?
-)
 
 # On any admin or plugin login redirect to standard social-auth entry point for agreement to terms
 LOGIN_REDIRECT_URL = "/login/"
