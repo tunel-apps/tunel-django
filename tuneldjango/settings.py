@@ -68,12 +68,13 @@ def generate_secret_keys(filename):
 SECRET_KEY = os.environ.get("SECRET_KEY")
 JWT_SERVER_SECRET = os.environ.get("JWT_SERVER_SECRET")
 
-if not SECRET_KEY or not JWT_SERVER_SECRET:
-    try:
-        from .secret_key import SECRET_KEY, JWT_SERVER_SECRET
-    except ImportError:
-        generate_secret_keys(os.path.join(BASE_DIR, "secret_key.py"))
-        from .secret_key import SECRET_KEY, JWT_SERVER_SECRET
+# This is intended for one off running, e.g., we would need to set envars
+# in app to keep this state.
+if not SECRET_KEY:
+    SECRET_KEY = get_random_secret_key()
+
+if not JWT_SERVER_SECRET:
+    JWT_SERVER_SECRET = get_random_secret_key()
 
 # Set the domain name (and keep record of without port)
 DOMAIN_NAME = cfg.DOMAIN_NAME
