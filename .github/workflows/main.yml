@@ -12,27 +12,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Setup black environment
-        run: conda create --quiet --name black black
 
       - name: Check formatting with black
         run: |
-          export PATH="/usr/share/miniconda/bin:$PATH"
-          source activate black
+          pip install black
           black --check tuneldjango
 
   testing:
     needs: formatting
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Setup testing environment
-        run: conda create --quiet --name testing
-
+      - uses: actions/checkout@v3
       - name: Test tunel-django
         run: |
-          export PATH="/usr/share/miniconda/bin:$PATH"
-          source activate testing
           pip install -r requirements.txt
           export DJANGO_SECRET_KEY=thiskeyisnotsosecret
-          python manage.py test tests.test_project
+          python manage.py test tests
