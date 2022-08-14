@@ -22,10 +22,9 @@ jobs:
     needs: formatting
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-
+      - uses: actions/checkout@v3
       - name: Test tunel-django
         run: |
           pip install -r requirements.txt
           export DJANGO_SECRET_KEY=thiskeyisnotsosecret
-          python manage.py test tests.test_project
+          python manage.py test tests
