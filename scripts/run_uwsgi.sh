@@ -37,16 +37,18 @@ printf "API socket is ${api_socket}\n"
 
 if [ ! -f "migrations-run" ]; then
     sleep 3
+    python3 /code/manage.py makemigrations admin
     python3 /code/manage.py makemigrations users
     python3 /code/manage.py makemigrations main
     python3 /code/manage.py makemigrations
+    python3 /code/manage.py migrate users
+    python3 /code/manage.py migrate admin
     python3 /code/manage.py migrate main
     python3 /code/manage.py migrate auth
     python3 /code/manage.py migrate      
     python3 /code/manage.py collectstatic --noinput
     python3 /code/manage.py add_superuser ${TUNEL_USER} ${TUNEL_PASS}
-# You can uncomment this if you don't always want them to run
-#    touch migrations-run
+    touch migrations-run
 fi
 
 if [[ "${use_nginx}" == "true" ]]; then
