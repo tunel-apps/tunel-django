@@ -48,7 +48,7 @@ if [ ! -f "migrations-run" ]; then
     python3 /code/manage.py migrate      
     python3 /code/manage.py collectstatic --noinput
     python3 /code/manage.py add_superuser ${TUNEL_USER} ${TUNEL_PASS}
-    touch migrations-run
+    # touch migrations-run
 fi
 
 if [[ "${use_nginx}" == "true" ]]; then
